@@ -1,0 +1,18 @@
+{
+  "name": "Boilerplate App",
+  "displayName": "Boilerplate App",
+  "expo": {
+    "name": "Boilerplate App",
+    "slug": "Boilerplate",
+    "privacy": "unlisted",
+    "sdkVersion": "35.0.0",
+    "version": "1.0.0",
+    "entryPoint": "node_modules/expo/AppEntry.js",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "description": "An app containing basic features to quickly get started"
+  }
+}
