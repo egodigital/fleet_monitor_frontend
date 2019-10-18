@@ -64,12 +64,7 @@ export default class App extends React.Component {
   _renderItem = ({ item, dimensions }) => (
     <View style={{ width: dimensions.width, backgroundColor: item.colors[0], height: dimensions.height }}>
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Ionicons
-          style={{ backgroundColor: 'transparent' }}
-          name={item.icon}
-          size={200}
-          color="white"
-        />
+        <Image style={styles.background} source={item.image}/>
         <View>
           <Text style={styles.title}>{item.title}</Text>
           <Text style={styles.text}>{item.text}</Text>
