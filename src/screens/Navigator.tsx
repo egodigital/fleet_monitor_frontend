@@ -111,11 +111,11 @@ Profile.path = 'settings';
 
 const createAppNavigator = () => createBottomTabNavigator({ Home, Book, Profile, Settings },
   {
-    initialRouteName: 'Book',
+    initialRouteName: 'Profile',
   });
 const createWebNavigator = () => createDrawerNavigator({ Home, Book, Profile, Settings },
   {
-    initialRouteName: 'Book',
+    initialRouteName: 'Profile',
 
     contentComponent: (props: DrawerContentComponentProps) => {
       console.log(props);

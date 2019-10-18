@@ -8,6 +8,10 @@ const styles = StyleSheet.create({
   },
   icon: {
     paddingLeft: 10
+  },
+  card:{
+    height: 510,
+    width: '100%',
   }
 });
 
