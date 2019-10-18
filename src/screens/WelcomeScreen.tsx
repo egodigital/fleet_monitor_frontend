@@ -1,5 +1,7 @@
 import React from 'react';
-import { StyleSheet, View, Image, Text } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { StyleSheet, View, Text } from 'react-native';
+import { LinearGradient } from 'expo';
 import AppIntroSlider from 'react-native-app-intro-slider';
 
 const styles = StyleSheet.create({
@@ -25,59 +27,66 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 16,
   },
-  slides:{
-
-  },
-
 });
 
 const slides = [
   {
     key: 'somethun',
-    title: 'Title 1',
-    text: 'Your Journey of Discovery.\nAll that you want to know, and all that you will ever know',
-    image: require('../../assets/11.jpg'),
-    backgroundColor: '#59b2ab',
-  },
-  {
-    key: 'somethun-dos',
-    title: 'Title 2',
-    text: 'All that we will show you, and all that you will ever see',
-    image: require('../../assets/12.jpg'),
-    backgroundColor: '#febe29',
+    title: 'Quick setup, good defaults',
+    text:
+      'React-native-app-intro-slider is easy to setup with a small footprint and no dependencies. And it comes with good default layouts!',
+    icon: 'ios-images',
+    colors: ['#63E2FF', '#B066FE'],
   },
   {
     key: 'somethun1',
-    title: 'Rocket guy',
-    text: 'I\'m already out of ideas, forever',
-    image: require('../../assets/13.jpg'),
-    backgroundColor: '#22bcb5',
-  }
+    title: 'Super customizable',
+    text:
+      'The component is also super customizable, so you can adapt it to cover your needs and wants.',
+    icon: 'ios-options',
+    colors: ['#A3A1FF', '#3A3897'],
+  },
+  {
+    key: 'somethun2',
+    title: 'No need to buy me beer',
+    text: 'Usage is all free',
+    icon: 'ios-beer',
+    colors: ['#29ABE2', '#4F00BC'],
+  },
 ];
- 
+
 export default class App extends React.Component {
-  state = {
-    showRealApp: false
-  }
-  _renderItem = (item) => {
-    return (
-      <View style={styles.slide}>
+  _renderItem = ({ item, dimensions }) => (
+    <View style={{width:dimensions.width, backgroundColor:item.colors[0], height:dimensions.height}}>
+      <View style={{ flex:1, justifyContent:'center', alignItems:'center'}}>
+      <Ionicons
+        style={{ backgroundColor: 'transparent' }}
+        name={item.icon}
+        size={200}
+        color="white"
+        />
+      <View>
         <Text style={styles.title}>{item.title}</Text>
-        <Image source={item.image} />
         <Text style={styles.text}>{item.text}</Text>
       </View>
-    );
-  }
-  onDone = () => {
-    // User finished the introduction. Show real app through
-    // navigation or simply by controlling state
-    this.setState({ showRealApp: true });
-  }
+        </View>
+    </View>
+      
+  );
+
   render() {
-    if (this.state.showRealApp) {
-      return <App />;
-    } else {
-      return <AppIntroSlider renderItem={this._renderItem} slides={slides} onDone={this.onDone}/>;
-    }
+    return (
+      <AppIntroSlider
+        slides={slides}
+        renderItem={this._renderItem}
+        // bottomButton
+        showPrevButton
+        showSkipButton
+        // hideNextButton
+        // hideDoneButton
+        onSkip={()=> {this.props.navigation.navigate('Home')}}
+        onDone={()=> {this.props.navigation.navigate('Home')}}
+      />
+    );
   }
 }
