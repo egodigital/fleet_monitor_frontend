@@ -1,6 +1,6 @@
 import styles from './styles';
 import React, { Component } from 'react';
-import { View, Platform, TextInput } from 'react-native';
+import { View, Platform, TextInput, Switch, Picker } from 'react-native';
 
 import { Button, Icon, Text, Card, PricingCard } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker'
@@ -234,6 +234,11 @@ class BookScreen extends Component {
                 }}
                 onDateChange={(date) => this.onNewDateTo(date)}
               />
+            </View>
+
+            <View style={{ ...styles.inputRow, alignContent:'space-between' }}>
+              <Text style={{fontSize: 16}}>Disable car pooling </Text>
+              <Switch></Switch>
             </View>
             <PricingCard
               color="#4f9deb"
