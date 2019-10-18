@@ -20,7 +20,6 @@ import { TabScene } from 'react-navigation';
 import BookingsScreen from './MyBookings/MyBookingsScreen';
 import BookScreen from './Book';
 import MyBookingsScreen from './MyBookings/MyBookingsScreen';
-import BookingInformationScreen from './BookingInformation';
 
 const defaultSackOptions = ({ navigation }: NavigationScreenOptions) => ({
   title: navigation.state.routeName,
@@ -135,12 +134,7 @@ const Profile = createStackNavigator({
 Profile.navigationOptions = MenuNavigationOptions('user');
 Profile.path = 'settings';
 
-const createAppNavigator = () => createBottomTabNavigator({
-  Home, MyBookings, Profile, Settings, BookingInformation: {
-    screen: BookingInformationScreen,
-    path: '',
-    navigationOptions: defaultNavigationOptions,
-  } },
+const createAppNavigator = () => createBottomTabNavigator({ Home, MyBookings, Profile, Settings },
   {
     initialRouteName: 'MyBookings',
   });

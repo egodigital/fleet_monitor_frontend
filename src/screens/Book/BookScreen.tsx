@@ -28,49 +28,25 @@ class BookScreen extends Component {
       longitudeDelta: 0.1,
     },
     destination: undefined,
-    price: undefined,
+    price: 3.25,
   }
-  price: undefined;
 
   onNewDateFrom(date: String) {
     console.log(date.split(/:(.+)/)[1].substr(1));
     now = moment(date.split(/:(.+)/)[1].substr(1))
     this.state.startDate = new Date(date.split(/:(.+)/)[1].substr(1));
+    this.updatePriceEstimation();
     this.setState(this.state);
   }
 
   onNewDateTo(date: Date) {
     this.state.endDate = new Date(date.split(/:(.+)/)[1].substr(1));
+    this.updatePriceEstimation();
     this.setState(this.state);
   }
 
   isBookingInformationValid(): boolean {
     return this.state.destination;
-  }
-
-  updatePrice() {
-    if (!this.isBookingInformationValid()) {
-      this.price = undefined;
-      return;
-    }
-    var test = fetch('http://134.61.109.96:5000/booking_price', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        start_time: this.state.startDate.toString(),
-        end_time: this.state.endDate.toString(),
-        distance: this.calculateDistance(),
-        user_id: "Patrice",
-      }),
-    }).then((response) => response.json()
-    ).then((response) => {
-      // console.log(response)
-      this.state.price = response.price;
-      this.setState(this.state)
-    });
   }
 
   componentDidMount() {
@@ -115,10 +91,15 @@ class BookScreen extends Component {
 
   onMapPress = (event) => {
     this.state.destination = event.nativeEvent.coordinate;
+    this.updatePriceEstimation();
     this.setState(this.state);
   }
 
   updatePriceEstimation() {
+    if (!this.isBookingInformationValid()) {
+      return;
+    }
+    try {
     fetch('http://134.61.109.96:5000/get_booking', {
       method: 'PUT',
       headers: {
@@ -133,8 +114,11 @@ class BookScreen extends Component {
     })
       .then(response => response.json())  // promise
       .then(json => {
-        console.log(json);
+        this.state.price = json['price'];
       });
+    } catch (error) {
+      this.state.price = 0;
+    }
   }
 
   requestBooking() {
@@ -254,7 +238,7 @@ class BookScreen extends Component {
             <PricingCard
               color="#4f9deb"
               title="Your Ride will cost"
-              price="$0"
+              price={"" + this.state.price + "€"}
               // info={['1 User']}
               button={{ title: 'Request booking', icon: 'check-circle' }}
               onButtonPress={() => this.requestBooking()}
