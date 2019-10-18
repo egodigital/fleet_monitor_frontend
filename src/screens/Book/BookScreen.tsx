@@ -31,12 +31,16 @@ class BookScreen extends Component {
     price: undefined,
   }
 
-  onNewDateFrom(date: Date) {
-    console.log(date);
+  onNewDateFrom(date: String) {
+    console.log(date.split(/:(.+)/)[1].substr(1));
+    now = moment(date.split(/:(.+)/)[1].substr(1))
+    this.state.startDate = new Date(date.split(/:(.+)/)[1].substr(1));
+    this.setState(this.state);
   }
 
   onNewDateTo(date: Date) {
-    console.log(date);
+    this.state.endDate = new Date(date.split(/:(.+)/)[1].substr(1));
+    this.setState(this.state);
   }
 
   isBookingInformationValid(): boolean {
@@ -62,7 +66,7 @@ class BookScreen extends Component {
       }),
     }).then((response) => response.json()
     ).then((response) => {
-      console.log(response)
+      // console.log(response)
       this.state.price = response.price;
       this.setState(this.state)
     });
@@ -80,7 +84,7 @@ class BookScreen extends Component {
             longitudeDelta: 0.1,
           };
           component.map.animateToRegion(region, 2000);
-          console.log(this.state.location);
+          // console.log(this.state.location);
           this.state.location = region;
           this.setState(this.state);
         },
@@ -118,7 +122,7 @@ class BookScreen extends Component {
   }
 
   render() {
-    console.log(this.state);
+    // console.log(this.state);
     return (
       <View style={styles.container}>
         <View style={styles.mapView}>
@@ -129,7 +133,7 @@ class BookScreen extends Component {
             followsUserLocation={true}
             showsUserLocation={true}
             loadingEnabled={true}
-            onPress={this.onMapPress}
+            onPress={(marker) => this.onMapPress(marker)}
           >
             <MapView.Marker
               coordinate={this.state.location}
@@ -166,6 +170,7 @@ class BookScreen extends Component {
                 mode={'datetime'}
                 placeholder="select date"
                 is24Hour={true}
+                minuteInterval={15}
                 format="Fro\m \at: DD.MM.YY HH:mm"
                 minDate={this.state.startDate.minDate}
                 maxDate={this.state.startDate.maxDate}
@@ -175,7 +180,7 @@ class BookScreen extends Component {
                 customStyles={{
                   dateInput: styles.input,
                 }}
-                onDateChange={this.onNewDateFrom}
+                onDateChange={(date) => this.onNewDateFrom(date)}
               />
               <View style={{ marginLeft: 10 }} />
               <Icon containerStyle={styles.inputPrependIcon} name="calendar" type="font-awesome" color="lightblue" size={16} />
@@ -186,6 +191,7 @@ class BookScreen extends Component {
                 is24Hour={true}
                 placeholder="select date"
                 format="To: DD.MM.YY HH:mm"
+                minuteInterval={15}
                 minDate={this.state.endDate.minDate}
                 maxDate={this.state.endDate.maxDate}
                 confirmBtnText="Confirm"
@@ -194,7 +200,7 @@ class BookScreen extends Component {
                 customStyles={{
                   dateInput: styles.input,
                 }}
-                onDateChange={this.onNewDateTo}
+                onDateChange={(date) => this.onNewDateTo(date)}
               />
             </View>
             <PricingCard
