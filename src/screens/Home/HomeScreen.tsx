@@ -2,6 +2,8 @@ import styles from './styles';
 import React, { Component, } from 'react';
 import { Platform, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import { carImage } from '../../../assets';
+import { Image, Card } from 'react-native-elements';
 
 class HomeScreen extends Component {
   constructor(props) {

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Platform, View } from 'react-native';
+import { Platform, View, TouchableWithoutFeedback } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { createSwitchNavigator, createAppContainer, SafeAreaView } from 'react-navigation';
 import { NavigationScreenOptions } from 'react-navigation';
@@ -17,8 +17,28 @@ import Loading from './Loading'
 import { Avatar, Text, Divider } from 'react-native-elements';
 import { NavigationScreenProps } from 'react-navigation';
 import { TabScene } from 'react-navigation';
-import BookingsScreen from './Bookings/BookingsScreen';
+import BookingsScreen from './MyBookings/MyBookingsScreen';
 import BookScreen from './Book';
+import MyBookingsScreen from './MyBookings/MyBookingsScreen';
+import BookingInformationScreen from './BookingInformation';
+
+const defaultSackOptions = ({ navigation }: NavigationScreenOptions) => ({
+  title: navigation.state.routeName,
+  headerLeft:  (
+      <TouchableWithoutFeedback
+        onPress={() => navigation.goBack()}
+      >
+        <View style={{ flexDirection: "row", alignItems:"center", marginHorizontal: 20 }}>
+          <Icon
+            name='angle-left'
+            type="font-awesome"
+            size={24}
+          />
+          <Text style={{ marginHorizontal: 10, fontWeight: "bold" }} >Back</Text>
+        </View>
+      </TouchableWithoutFeedback>
+    )
+});
 
 
 const defaultNavigationOptions = ({ navigation }: NavigationScreenOptions) => ({
@@ -51,7 +71,7 @@ const MenuNavigationOptions = (iconName: string) => ({ navigation }: NavigationS
     ),
     drawerLabel: navigation.state.routeName,
     drawerIcon: ({ tintColor }: TabScene) => (
-      <Icon name={iconName} color={tintColor} size={20}  />
+      <Icon name={iconName} color={tintColor} size={20} />
     )
   };
 };
@@ -84,18 +104,22 @@ Settings.navigationOptions = MenuNavigationOptions('cog');
 Settings.path = 'settings';
 
 
-const Book = createStackNavigator({
+const MyBookings = createStackNavigator({
+  MyBookings: {
+    screen: MyBookingsScreen,
+    path: 'bookings',
+  },
   Book: {
     screen: BookScreen,
-    path: '',
-    navigationOptions: defaultNavigationOptions,
+    path: 'bookings/book',
+    navigationOptions: defaultSackOptions,
   },
 }, {
-  initialRouteName: 'Book',
+  initialRouteName: 'MyBookings',
   headerMode: Platform.select({ web: 'screen' }),
 });
-Book.navigationOptions = MenuNavigationOptions('cog');
-Book.path = 'settings';
+MyBookings.navigationOptions = MenuNavigationOptions('book');
+MyBookings.path = 'settings';
 
 
 const Profile = createStackNavigator({
@@ -111,11 +135,16 @@ const Profile = createStackNavigator({
 Profile.navigationOptions = MenuNavigationOptions('user');
 Profile.path = 'settings';
 
-const createAppNavigator = () => createBottomTabNavigator({ Home, Book, Profile, Settings },
+const createAppNavigator = () => createBottomTabNavigator({
+  Home, MyBookings, Profile, Settings, BookingInformation: {
+    screen: BookingInformationScreen,
+    path: '',
+    navigationOptions: defaultNavigationOptions,
+  } },
   {
-    initialRouteName: 'Profile',
+    initialRouteName: 'MyBookings',
   });
-const createWebNavigator = () => createDrawerNavigator({ Home, Book, Profile, Settings },
+const createWebNavigator = () => createDrawerNavigator({ Home, MyBookings, Profile, Settings },
   {
     initialRouteName: 'Profile',
 
@@ -153,7 +182,7 @@ const RootSwitch = createSwitchNavigator({
   Welcome,
   Loading,
 }, {
-    initialRouteName: 'Loading',
+    initialRouteName: 'Welcome',
 });
 
 const createApp = Platform.select({

@@ -30,6 +30,7 @@ class BookScreen extends Component {
     destination: undefined,
     price: undefined,
   }
+  price: undefined;
 
   onNewDateFrom(date: String) {
     console.log(date.split(/:(.+)/)[1].substr(1));
@@ -117,8 +118,55 @@ class BookScreen extends Component {
     this.setState(this.state);
   }
 
-  requestBooking() {
+  updatePriceEstimation() {
+    fetch('http://134.61.109.96:5000/get_booking', {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: {
+        start_time: this.state.startDate.toString(),
+        end_time: this.state.endDate.toString(),
+        distance: this.calculateDistance(),
+      }
+    })
+      .then(response => response.json())  // promise
+      .then(json => {
+        console.log(json);
+      });
+  }
 
+  requestBooking() {
+    console.log({
+      start_time: Math.floor(this.state.startDate.date.getTime() / 1000),
+      end_time: Math.floor(this.state.endDate.date.getTime() / 1000),
+      distance: this.calculateDistance(),
+    });
+    try {
+    fetch('http://134.61.109.96:5000/book_vehicle', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user_id: "Patrice",
+        start_time: Math.floor(this.state.startDate.date.getTime() / 1000),
+        end_time: Math.floor(this.state.endDate.date.getTime() / 1000),
+        distance: this.calculateDistance(),
+      })
+    })
+      .then(response => response.json())  // promise
+      .then(json => {
+        console.log(json);
+      });
+    } catch (error) {
+      this.alert('No communication to the backend! ' + error);
+    }
+  }
+  alert(arg0: string) {
+    throw new Error("Method not implemented.");
   }
 
   render() {
@@ -209,6 +257,7 @@ class BookScreen extends Component {
               price="$0"
               // info={['1 User']}
               button={{ title: 'Request booking', icon: 'check-circle' }}
+              onButtonPress={() => this.requestBooking()}
             />
           </View>
         }

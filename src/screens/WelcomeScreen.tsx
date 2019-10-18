@@ -62,17 +62,59 @@ const slides = [
 
 export default class App extends React.Component {
   _renderItem = ({ item, dimensions }) => (
-    <View style={{width:dimensions.width, backgroundColor:item.colors[0], height:dimensions.height}}>
-      <View style={{ flex:1, justifyContent:'center', alignItems:'center'}}>
-      <Image style={styles.background} source={item.image}/>
-      <View>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.text}>{item.text}</Text>
-      </View>
+    <View style={{ width: dimensions.width, backgroundColor: item.colors[0], height: dimensions.height }}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Ionicons
+          style={{ backgroundColor: 'transparent' }}
+          name={item.icon}
+          size={200}
+          color="white"
+        />
+        <View>
+          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.text}>{item.text}</Text>
         </View>
+      </View>
     </View>
-      
+
   );
+
+
+  componentDidMount() {
+    try {
+      fetch('http://134.61.109.96:5000/create_user', {
+        method: 'POST',
+        body: JSON.stringify({
+          user_id: "Patrice",
+          first_name: "Patrice",
+          last_name: "Loves this app",
+          password: "password123",
+        }),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+      })
+        .then(response => response.json())  // promise
+        .then(json => {
+          console.log(json);
+          fetch('http://134.61.109.96:5000/get_users', {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            }
+          })
+            .then(response => response.json())  // promise
+            .then(json => {
+              console.log(json);
+            });
+        });
+    } catch (error) {
+      this.alert('No communication to the backend! ' + error);
+    }
+      
+  }
 
   render() {
     return (
@@ -84,8 +126,8 @@ export default class App extends React.Component {
         showSkipButton
         // hideNextButton
         // hideDoneButton
-        onSkip={()=> {this.props.navigation.navigate('Home')}}
-        onDone={()=> {this.props.navigation.navigate('Home')}}
+        onSkip={() => { this.props.navigation.navigate('Home') }}
+        onDone={() => { this.props.navigation.navigate('Home') }}
       />
     );
   }
