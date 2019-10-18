@@ -12,6 +12,7 @@ import SettingsScreen from './Settings';
 import ProfileScreen from './Profile';
 import HomeScreen from './Home';
 import Auth from './Auth'
+import Welcome from './WelcomeScreen'
 import { Avatar, Text, Divider } from 'react-native-elements';
 import { NavigationScreenProps } from 'react-navigation';
 import { TabScene } from 'react-navigation';
@@ -147,9 +148,10 @@ Main.path = '';
 
 const RootSwitch = createSwitchNavigator({
   Auth,
-  Main
+  Main,
+  Welcome,
 }, {
-    initialRouteName: 'Main',
+    initialRouteName: 'Welcome',
 });
 
 const createApp = Platform.select({
