@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, ActivityIndicator, StyleSheet } from "react-native";
+import { Image } from "react-native-elements";
 
 const styles = StyleSheet.create({
     container: {
@@ -19,7 +20,7 @@ class LoadingScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text style={{ paddingBottom: 20 }}>Hello!</Text>
+                <Image style={{width: 300, height: 116}} source={require('../../assets/logo.png')}/>
                 <ActivityIndicator size="large" />
             </View>
         );

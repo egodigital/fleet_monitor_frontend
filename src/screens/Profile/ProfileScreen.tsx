@@ -2,20 +2,14 @@ import React, { Component } from "react";
 import { View, Alert, Text } from "react-native";
 import { Card, Divider } from 'react-native-elements';
 import Leaderboard from "./leaderboard.js";
-import styles from "./styles.tsx";
-import { ScrollView } from "react-native-gesture-handler";
+import styles from "./styles";
+import { ScrollView, TouchableHighlight } from "react-native-gesture-handler";
 
 export default class AvatarAndClickable extends Component {
   state = {
-    name: 'Crysfel',
-    lastName: 'Villa Roman',
-    occupation: 'Software Engineer',
-    friends: '1,200',
-    favorites: '2,491',
-    comments: '4,832',
-    prefrences: 'economical',
-    nature: 'social',
-    data: DATA
+    prifileUser: profileUser,
+    data: DATA,
+    event: cEvents
   };
 
   componentDidMount() {
@@ -28,7 +22,7 @@ export default class AvatarAndClickable extends Component {
           "https://www.shareicon.net/data/128x128/2016/09/15/829473_man_512x512.png"
       };
       this.setState({ data: this.state.data.concat(newData) });
-    }, 3000);
+    }, 100000);
   }
 
   alert = (title, body) => {
@@ -39,15 +33,30 @@ export default class AvatarAndClickable extends Component {
 
   render() {
     const props = {
-      labelBy: "name",
-      sortBy: "score",
-      data: this.state.data,
-      icon: "iconUrl",
-      onRowPress: (item, index) => {
-        this.alert(item.name + " clicked", item.score + " points, wow!");
-      },
-      evenRowColor: "#edfcf9"
+      com: [
+        {
+          data: this.state.prifileUser,
+          icon: "iconUrl",
+          evenRowColor: "#edfcf9"
+        },
+        {
+          labelBy: "name",
+          sortBy: "score",
+          data: this.state.data,
+          icon: "iconUrl",
+          onRowPress: (item, index) => {
+            this.alert(item.name + " clicked", item.score + " points, wow!");
+          },
+          evenRowColor: "#edfcf9"
+        },        
+        {
+          data: this.state.event,
+          icon: "iconUrl",
+          evenRowColor: "#edfcf9"
+        }
+      ]
     };
+
 
     return (
       <ScrollView>
@@ -64,19 +73,26 @@ export default class AvatarAndClickable extends Component {
             Profile
           </Text>
         </View>
-        <Card containerStyle={styles.card}>
-            <Text>First Name: {this.state.name}</Text>
-            <Text>Last Name: {this.state.lastName}</Text>
-            <Text>Occupation: {this.state.occupation}</Text>
+        <Leaderboard {...props.com[0]} renderItem={(item) => (
+          <TouchableHighlight>
+          <View>
+            <Card>
+            <Text>Name: {item.name}</Text>
+            <Text>Last Name: {item.lastName}</Text>
+            <Text>Occupation: {item.occupation}</Text>
             <Divider style={{ marginVertical: 10 }} />
-            <Text>Friends: {this.state.friends}</Text>
-            <Text>Favorites: {this.state.favorites}</Text>
-            <Text>Comments: {this.state.comments}</Text>
+            <Text>Freinds: {item.friends}</Text>
+            <Text>Favrites: {item.favorites}</Text>
+            <Text>Comments: {item.comments}</Text>
             <Divider style={{ marginVertical: 10 }} />
-            <Text>Prefrences: {this.state.prefrences}</Text>
-            <Text>Nature: {this.state.nature}</Text>
+            <Text>Prefrences: {item.prefrences}</Text>
+            <Text>Nature: {item.nature}</Text>
             <Divider style={{ marginVertical: 10 }} />
-          </Card>
+            </Card>
+            <Divider></Divider>
+          </View>
+          </TouchableHighlight>
+        )} />
         <View
           style={{
             paddingTop: 50,
@@ -88,12 +104,95 @@ export default class AvatarAndClickable extends Component {
             Weekly Leaderboard
           </Text>
         </View>
-        <Leaderboard {...props} />
+        <Leaderboard {...props.com[1]} />
+        <View
+          style={{
+            paddingTop: 50,
+            backgroundColor: "black",
+            alignItems: "center"
+          }}
+        >
+          <Text style={{ fontSize: 30, color: "white", paddingBottom: 10 }}>
+            Community Activities
+          </Text>
+        </View>
+        <Leaderboard {...props.com[2]} renderItem={(item) => (
+          <TouchableHighlight>
+          <View>
+            <Card>
+            <Text>{item.name}</Text>
+            <Text>{item.data}</Text>
+            <Text>{item.timeslot}</Text>
+            <Text>{item.sharing}</Text>
+            <Text>{item.activity}</Text>
+            </Card>
+            <Divider></Divider>
+          </View>
+          </TouchableHighlight>
+        )} />
       </View>
       </ScrollView>
     );
   }
 }
+
+const profileUser = [
+  {
+    name: 'Petrice',
+    lastName: 'Loves this app',
+    occupation: 'News reported/Dancer',
+    friends: '201',
+    favorites: '491',
+    comments: '4,832',
+    prefrences: 'economical',
+    nature: 'social',
+  }
+]
+
+const cEvents = [
+  {
+    name: "Jhon Doe",
+    date: "Today",
+    timeslot: "12:30-13:30",
+    sharing: "possible",
+    activity: "Grossory"
+  },
+  {
+    name: "Petrice",
+    Date: "Today",
+    timeslot: "20:30-10:30",
+    sharing: "possible",
+    activity: "Gym"
+  },
+  {
+    name: "Jhon Doe",
+    Date: "Tomorrow",
+    timeslot: "12:30-13:30",
+    sharing: "possible",
+    activity: "Grossory"
+  },
+  {
+    name: "Petrice",
+    Date: "Tomorrow",
+    timeslot: "20:30-10:30",
+    sharing: "possible",
+    activity: "Gym"
+  },
+  {
+    name: "Jhon Doe",
+    Date: "21,10,2019",
+    timeslot: "12:30-13:30",
+    sharing: "possible",
+    activity: "Grossory"
+  },
+  {
+    name: "Petrice",
+    Date: "21,10,2019",
+    timeslot: "20:30-10:30",
+    sharing: "possible",
+    activity: "Gym"
+  }
+]
 
 const DATA = [
   {

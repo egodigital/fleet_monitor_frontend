@@ -3,7 +3,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, View, Text } from 'react-native';
 import { LinearGradient } from 'expo';
 import AppIntroSlider from 'react-native-app-intro-slider';
-
+import { Image } from 'react-native-elements';
+import { image1, image2, image3 } from '../../assets'
 const styles = StyleSheet.create({
   mainContent: {
     flex: 1,
@@ -27,15 +28,19 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 16,
   },
+  background: {
+    width: 300,
+    height: 116,
+  },
 });
 
 const slides = [
   {
-    key: 'somethun',
-    title: 'Quick setup, good defaults',
+    key: 'Welcome',
+    title: 'Your Journey of Discovery',
     text:
       'React-native-app-intro-slider is easy to setup with a small footprint and no dependencies. And it comes with good default layouts!',
-    icon: 'ios-images',
+    image: image3,
     colors: ['#63E2FF', '#B066FE'],
   },
   {
@@ -43,14 +48,14 @@ const slides = [
     title: 'Super customizable',
     text:
       'The component is also super customizable, so you can adapt it to cover your needs and wants.',
-    icon: 'ios-options',
+    image: image2,
     colors: ['#A3A1FF', '#3A3897'],
   },
   {
     key: 'somethun2',
     title: 'No need to buy me beer',
     text: 'Usage is all free',
-    icon: 'ios-beer',
+    image: image1,
     colors: ['#29ABE2', '#4F00BC'],
   },
 ];
@@ -59,12 +64,7 @@ export default class App extends React.Component {
   _renderItem = ({ item, dimensions }) => (
     <View style={{width:dimensions.width, backgroundColor:item.colors[0], height:dimensions.height}}>
       <View style={{ flex:1, justifyContent:'center', alignItems:'center'}}>
-      <Ionicons
-        style={{ backgroundColor: 'transparent' }}
-        name={item.icon}
-        size={200}
-        color="white"
-        />
+      <Image style={styles.background} source={item.image}/>
       <View>
         <Text style={styles.title}>{item.title}</Text>
         <Text style={styles.text}>{item.text}</Text>
