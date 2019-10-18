@@ -16,6 +16,7 @@ import { Avatar, Text, Divider } from 'react-native-elements';
 import { NavigationScreenProps } from 'react-navigation';
 import { TabScene } from 'react-navigation';
 import BookingsScreen from './Bookings/BookingsScreen';
+import BookScreen from './Book';
 
 
 const defaultNavigationOptions = ({ navigation }: NavigationScreenOptions) => ({
@@ -81,18 +82,18 @@ Settings.navigationOptions = MenuNavigationOptions('cog');
 Settings.path = 'settings';
 
 
-const Bookings = createStackNavigator({
-  Bookings: {
-    screen: BookingsScreen,
+const Book = createStackNavigator({
+  Book: {
+    screen: BookScreen,
     path: '',
     navigationOptions: defaultNavigationOptions,
   },
 }, {
-  initialRouteName: 'Bookings',
+  initialRouteName: 'Book',
   headerMode: Platform.select({ web: 'screen' }),
 });
-Bookings.navigationOptions = MenuNavigationOptions('cog');
-Bookings.path = 'settings';
+Book.navigationOptions = MenuNavigationOptions('cog');
+Book.path = 'settings';
 
 
 const Profile = createStackNavigator({
@@ -108,13 +109,13 @@ const Profile = createStackNavigator({
 Profile.navigationOptions = MenuNavigationOptions('user');
 Profile.path = 'settings';
 
-const createAppNavigator = () => createBottomTabNavigator({ Home, Bookings, Profile, Settings },
+const createAppNavigator = () => createBottomTabNavigator({ Home, Book, Profile, Settings },
   {
-    initialRouteName: 'Bookings',
+    initialRouteName: 'Book',
   });
-const createWebNavigator = () => createDrawerNavigator({ Home, Bookings, Profile, Settings },
+const createWebNavigator = () => createDrawerNavigator({ Home, Book, Profile, Settings },
   {
-    initialRouteName: 'Bookings',
+    initialRouteName: 'Book',
 
     contentComponent: (props: DrawerContentComponentProps) => {
       console.log(props);

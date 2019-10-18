@@ -29,15 +29,11 @@ target 'Frontend' do
   pod 'RNGestureHandler', :podspec => '../node_modules/react-native-gesture-handler/RNGestureHandler.podspec'
   pod 'RNReanimated', :podspec => '../node_modules/react-native-reanimated/RNReanimated.podspec'
   pod 'RNScreens', :path => '../node_modules/react-native-screens'
+  pod 'RNDatePicker', :path => '../node_modules/react-native-date-picker'
 
-  use_unimodules!
-
-  # react-native-maps dependencies
   rn_maps_path = '../node_modules/react-native-maps'
   pod 'react-native-maps', path: rn_maps_path
-  # pod 'react-native-google-maps', :path => rn_maps_path
-  # pod 'GoogleMaps'
-  # pod 'Google-Maps-iOS-Utils'
-  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
+  use_unimodules!
 
 end
